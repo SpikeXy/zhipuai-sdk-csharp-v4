@@ -1,3 +1,4 @@
+using System;
 using ZhipuApi.Modules;
 
 namespace ZhipuApi
@@ -10,13 +11,15 @@ namespace ZhipuApi
         public Images images { get; private set; }
         
         public Embeddings embeddings { get; private set; }
-        
+        public Video videos { get; private set; }
+
         public ClientV4(string apiKey)
         {
             this._apiKey = apiKey;
             this.chat = new Chat(apiKey);
             this.images = new Images(apiKey);
             this.embeddings = new Embeddings(apiKey);
+            this.videos = new Video(apiKey);
         }
         
         

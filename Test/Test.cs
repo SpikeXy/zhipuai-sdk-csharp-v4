@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using ZhipuApi.Models;
 using ZhipuApi.Models.RequestModels;
@@ -25,12 +26,13 @@ namespace ZhipuApi.Test
         {
             // TestCompletion();
             // TestStream();
-            TestToolsCompletion();
+            //TestToolsCompletion();
             // TestToolsStream();
             // TestImageGeneration();
             // TestImageToTextCompletion();
             // TestImageToTextStream();
             // TestEmbedding();
+            TestVideoGeneration();
         }
         
         
@@ -184,6 +186,29 @@ namespace ZhipuApi.Test
                 .SetInput("一只可爱的科幻风格小猫咪"));
             
             Console.WriteLine(JsonSerializer.Serialize(response,DEFAULT_SERIALIZER_OPTION));
+
+        }
+
+        public static void TestVideoGeneration()
+        {
+            var clientV4 = new ClientV4(API_KEY);
+            var response = clientV4.videos.Generation(new VideoRequestBase()
+                .SetModel("cogvideox")
+                .SetPrompt("钢铁侠在国际空间站暴打绿巨人"));
+            //等待5分钟
+            Thread.Sleep(1000 * 60 * 5);
+            if(response != null)
+            {
+                var id= response.id;
+                var fileResponse = clientV4.videos.GenerationFile(id);
+                Console.WriteLine(JsonSerializer.Serialize(fileResponse, DEFAULT_SERIALIZER_OPTION));
+            }
+            else
+            {
+                Console.WriteLine("返回为空");
+            }
+
+            
 
         }
     }
